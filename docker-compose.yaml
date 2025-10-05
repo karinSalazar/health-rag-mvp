@@ -1,0 +1,54 @@
+depends_on: &depends
+  ollama:
+    condition: service_healthy
+
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    healthcheck:
+      test: ["CMD", "bash", "-lc", "curl -s http://localhost:11434/api/tags || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build: .
+    container_name: health-rag-api
+    command: uvicorn app.api:app --host 0.0.0.0 --port 8000 --log-level info
+    environment:
+      - LLM_PROVIDER=ollama
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-mistral:7b-instruct-q4}
+    volumes:
+      - ./:/workspace
+    working_dir: /workspace
+    ports:
+      - "8000:8000"
+    depends_on:
+      - ollama
+
+
+  ui:
+    image: python:3.11-slim
+    container_name: health-rag-ui
+    command: streamlit run app/streamlit_app.py --server.port 8501 --browser.gatherUsageStats false pip install -r requirements.txt
+    environment:
+      - LLM_PROVIDER=ollama
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-mistral:7b-instruct-q4}
+    volumes:
+      - ./:/workspace
+    working_dir: /workspace
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
+
+
+volumes:
+  ollama:
