@@ -1,17 +1,18 @@
-langchain==0.2.*
-langgraph>=0.2.0
-langchain-community>=0.2.0
-faiss-cpu
-sentence-transformers
-unstructured
-pydantic>=2
 beautifulsoup4
-tiktoken
-streamlit
-fastapi 
-uvicorn
-simsimd  # acelera FAISS en CPU
-pymupdf==1.24.*  # backend PDF rápido
-scispacy 
-spacy
+faiss-cpu>=1.7.4
+fastapi>=0.110
+langchain>=0.2.17
+langchain-community>=0.2.17
 langchain-huggingface
+langgraph>=0.4.5
+pydantic>=2.7
+pymupdf==1.24.*  # backend PDF rápido
+pypdf>=4.2.0
+scispacy
+sentence-transformers
+simsimd  # acelera FAISS en CPU
+spacy
+streamlit
+tiktoken
+unstructured
+uvicorn[standard]>=0.29

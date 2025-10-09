@@ -1,7 +1,9 @@
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import streamlit as st
 from agent.graph import build_graph
 from rag.ingest import build_index
-
 
 st.set_page_config(page_title="Healthcare RAG MVP", layout="wide")
 st.title("RAG Sanitario (MVP) – Guías + Informe HTML + Escala")

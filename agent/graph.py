@@ -40,9 +40,9 @@ def build_graph():
     g = StateGraph(S)
     g.add_node("retrieve", retrieve_node)
     g.add_node("score", score_node)
-    g.add_node("answer", answer_node)
+    g.add_node("generate_answer", answer_node)  # ← nombre de nodo distinto
     g.set_entry_point("retrieve")
-    g.add_edge("retrieve","score")
-    g.add_edge("score","answer")
-    g.add_edge("answer", END)
+    g.add_edge("retrieve", "score")
+    g.add_edge("score", "generate_answer")
+    g.add_edge("generate_answer", END)
     return g.compile()
